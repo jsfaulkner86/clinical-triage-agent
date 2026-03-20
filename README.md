@@ -45,6 +45,56 @@ stateDiagram-v2
 | LLM | OpenAI GPT-4 |
 | Language | Python 3.11+ |
 
+## Epic In-Basket Workflow Context
+
+This agent models the real governance logic behind Epic In-Basket triage — the most overloaded workflow in ambulatory care. In production Epic environments, In-Basket message routing follows a strict taxonomy and escalation hierarchy that this agent replicates as a stateful LangGraph pipeline.
+
+### Message Type Taxonomy
+| Message Type | Default Route | Escalation Trigger |
+|---|---|---|
+| Clinical Advice Request | RN Pool | Symptom severity → provider |
+| Rx Refill Request | MA Pool | Controlled substance → provider |
+| Test Result Notification | Ordering Provider | Critical value → immediate |
+| Scheduling Request | Front Desk | Urgent complaint → clinical |
+| Administrative | Front Desk | None |
+
+### Acuity-to-Pathway Mapping
+| Acuity Level | Care Pathway | SLA |
+|---|---|---|
+| `EMERGENT` | Emergency Department — immediate physician notification | Immediate |
+| `URGENT` | Acute Care — nurse assessment | Within 30 min |
+| `SEMI-URGENT` | Same-Day Scheduled — provider queue | Within 4 hrs |
+| `NON-URGENT` | Routine Scheduled — next available | Within 72 hrs |
+| `ADMINISTRATIVE` | Front Desk — non-clinical resolution | Standard |
+
+### Documentation Governance
+The agent enforces the same 5-field completeness check required before Epic In-Basket routing closes:
+- Vital signs documented
+- Allergy status confirmed
+- Medication reconciliation complete
+- Reason for visit documented
+- Insurance verification status
+
+> More than 2 missing fields triggers `requires_human_review = True` — matching the MA escalation threshold in Epic workflow governance.
+
+---
+
+## Epic FHIR Production Integration Path
+
+Connecting this agent to a live Epic environment requires the following:
+
+| Integration Point | FHIR Resource | Epic API |
+|---|---|---|
+| Inbound patient messages | `Communication` | MyChart Messaging API |
+| Work item routing | `Task` | In-Basket Task API |
+| Patient demographics | `Patient` | R4 Patient resource |
+| Encounter context | `Encounter` | R4 Encounter resource |
+| Allergy verification | `AllergyIntolerance` | R4 AllergyIntolerance |
+
+**Auth:** SMART-on-FHIR Backend Services (system-to-system, no user login required)  
+**Sandbox:** [Epic on FHIR Sandbox](https://fhir.epic.com) — free registration, full R4 resource access  
+**App Registration:** Non-Patient-Facing Application registration via Epic's vendor portal
+
 ## Getting Started
 
 ```bash
