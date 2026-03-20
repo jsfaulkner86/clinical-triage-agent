@@ -20,6 +20,22 @@ A stateful triage agent built with LangGraph and Pydantic AI that:
 - Drafts a suggested response for clinician review
 - Validates all outputs against a typed Pydantic schema
 
+```mermaid
+stateDiagram-v2
+    [*] --> parse_intake : PatientIntake received
+
+    parse_intake --> classify_acuity : Intake validated
+    parse_intake --> classify_acuity : Validation error → human_review = true
+
+    classify_acuity --> route_to_pathway : Acuity classified\nEMERGENT · URGENT · SEMI-URGENT\nNON-URGENT · ADMINISTRATIVE
+
+    route_to_pathway --> detect_documentation_gaps : Care pathway assigned
+
+    detect_documentation_gaps --> finalize_audit : Gaps flagged\n(>2 gaps → human_review = true)
+
+    finalize_audit --> [*] : Audit trail written\nRouting decision returned
+```
+
 ## Tech Stack
 
 | Layer | Technology |
