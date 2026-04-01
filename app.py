@@ -48,17 +48,17 @@ st.markdown("**LangGraph-powered patient intake, acuity classification, and care
 st.divider()
 
 # ── API KEY CHECK ──────────────────────────────────────
-openai_key = os.getenv("OPENAI_API_KEY")
-if not openai_key:
-    st.error("⚠️ OPENAI_API_KEY not found. Add it to your Streamlit secrets or .env file.")
-    st.code('[secrets]\nOPENAI_API_KEY = "sk-..."', language="toml")
+perplexity_key = os.getenv("PERPLEXITYAI_API_KEY")
+if not perplexity_key:
+    st.error("⚠️ PERPLEXITYAI_API_KEY not found. Add it to your Streamlit secrets or .env file.")
+    st.code('[secrets]\nPERPLEXITYAI_API_KEY = "pplx-..."', language="toml")
     st.stop()
 
 # ── IMPORT AGENT (after key check) ────────────────────
 from typing import TypedDict, Optional
 from langgraph.graph import StateGraph, END
 from pydantic import BaseModel
-from langchain_openai import ChatOpenAI
+from langchain_perplexity import ChatPerplexity
 from langchain.prompts import ChatPromptTemplate
 
 ACUITY_PATHWAYS = {
@@ -98,7 +98,11 @@ class AgentState(TypedDict):
 
 @st.cache_resource
 def get_llm():
-    return ChatOpenAI(model="gpt-4o", temperature=0.1)
+    return ChatPerplexity(
+        model="sonar",
+        temperature=0.1,
+        pplx_api_key=os.getenv("PERPLEXITYAI_API_KEY")
+    )
 
 def parse_intake(state: AgentState) -> AgentState:
     log = state.get("audit_log", [])
@@ -251,7 +255,7 @@ with col_right:
 
                 # Acuity badge
                 st.markdown(
-                    f'<div style="margin-bottom:1rem">' 
+                    f'<div style="margin-bottom:1rem">'
                     f'<span style="font-size:0.75rem;color:#7a7974;text-transform:uppercase;letter-spacing:0.1em">Acuity Level</span><br>'
                     f'<span class="acuity-badge" style="background:{color};color:white;font-size:1.1rem;padding:6px 18px;margin-top:4px">{acuity}</span>'
                     f'</div>',
@@ -298,7 +302,7 @@ with col_right:
 st.divider()
 st.markdown(
     '<p style="text-align:center;color:#bab9b4;font-size:0.8rem">'
-    'Clinical Triage Agent · Built with LangGraph + GPT-4o · '
+    'Clinical Triage Agent · Built with LangGraph + Perplexity Sonar · '
     '<a href="https://thefaulknergroupadvisors.com" style="color:#01696f">The Faulkner Group</a>'
     '</p>',
     unsafe_allow_html=True
