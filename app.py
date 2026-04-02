@@ -11,9 +11,10 @@ st.set_page_config(
 )
 
 # ── STYLES ───────────────────────────────────────────────────
+# Brand: Blue #6E93B0 (primary/actions), Gold #D4AE48 (interactive/checked)
 st.markdown("""
 <style>
-/* ─ Base & Background ─────────────────────────────────────── */
+/* ─ Base & Background ────────────────────────────────────── */
 [data-testid="stAppViewContainer"] {
     background: #f4f3ef;
 }
@@ -26,7 +27,7 @@ st.markdown("""
     max-width: 1200px;
 }
 
-/* ─ Typography ────────────────────────────────────────────── */
+/* ─ Typography ─────────────────────────────────────────── */
 h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
     color: #1a1916 !important;
     font-weight: 700;
@@ -35,7 +36,7 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
     color: #2c2b28;
 }
 
-/* ─ Form container ────────────────────────────────────────── */
+/* ─ Form container ─────────────────────────────────────── */
 [data-testid="stForm"] {
     background: #ffffff;
     border: 1.5px solid #c8c5be;
@@ -44,7 +45,7 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
     box-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
 
-/* ─ Input labels ───────────────────────────────────────────── */
+/* ─ Input labels ─────────────────────────────────────────── */
 .stTextInput label,
 .stTextArea label,
 .stCheckbox label,
@@ -55,7 +56,7 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
     letter-spacing: 0.01em;
 }
 
-/* ─ Text inputs & textareas ─────────────────────────────────── */
+/* ─ Text inputs & textareas ───────────────────────────────── */
 .stTextInput input,
 .stTextArea textarea {
     background: #fafaf8 !important;
@@ -68,8 +69,8 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
 }
 .stTextInput input:focus,
 .stTextArea textarea:focus {
-    border-color: #01696f !important;
-    box-shadow: 0 0 0 3px rgba(1,105,111,0.12) !important;
+    border-color: #6E93B0 !important;
+    box-shadow: 0 0 0 3px rgba(110,147,176,0.18) !important;
     outline: none !important;
     background: #ffffff !important;
 }
@@ -78,24 +79,25 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
     color: #9c9890 !important;
 }
 
-/* ─ Checkboxes ───────────────────────────────────────────────── */
+/* ─ Checkboxes ────────────────────────────────────────────── */
 [data-baseweb="checkbox"] input + div {
     border: 2px solid #b0ada6 !important;
     background: #fafaf8 !important;
+    border-radius: 4px !important;
 }
 [data-baseweb="checkbox"] input:checked + div {
-    background: #01696f !important;
-    border-color: #01696f !important;
+    background: #D4AE48 !important;
+    border-color: #D4AE48 !important;
 }
 .stCheckbox span {
     color: #2c2b28 !important;
     font-size: 0.9rem !important;
 }
 
-/* ─ Primary button ───────────────────────────────────────────── */
+/* ─ Primary button ─────────────────────────────────────────── */
 .stButton > button,
 [data-testid="stFormSubmitButton"] > button {
-    background: #01696f !important;
+    background: #6E93B0 !important;
     color: #ffffff !important;
     border: none !important;
     padding: 0.6rem 1.5rem !important;
@@ -108,11 +110,11 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
 }
 .stButton > button:hover,
 [data-testid="stFormSubmitButton"] > button:hover {
-    background: #0c4e54 !important;
-    box-shadow: 0 2px 8px rgba(1,105,111,0.25) !important;
+    background: #4e7799 !important;
+    box-shadow: 0 2px 8px rgba(110,147,176,0.30) !important;
 }
 
-/* ─ Subheaders ─────────────────────────────────────────────── */
+/* ─ Subheaders ──────────────────────────────────────────── */
 [data-testid="stHeadingWithActionElements"] h3 {
     color: #1a1916 !important;
     font-size: 1.15rem !important;
@@ -122,10 +124,10 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
     margin-bottom: 1rem;
 }
 
-/* ─ Info / warning / success boxes ───────────────────────────── */
+/* ─ Info / warning / success / error boxes ───────────────────────── */
 [data-testid="stInfo"] {
-    background: #edf4f5 !important;
-    border-left: 4px solid #01696f !important;
+    background: #eef3f7 !important;
+    border-left: 4px solid #6E93B0 !important;
     color: #1a1916 !important;
     border-radius: 6px !important;
 }
@@ -148,12 +150,12 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
     border-radius: 6px !important;
 }
 
-/* ─ Divider ───────────────────────────────────────────────────── */
+/* ─ Divider ────────────────────────────────────────────────── */
 [data-testid="stDivider"] hr {
     border-color: #d4d1ca !important;
 }
 
-/* ─ Acuity badge ─────────────────────────────────────────────── */
+/* ─ Acuity badge (clinical semantic — not brand colored) ────────────── */
 .acuity-badge {
     display: inline-block;
     padding: 5px 16px;
@@ -165,7 +167,7 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
     margin-top: 4px;
 }
 
-/* ─ Audit trail ──────────────────────────────────────────────── */
+/* ─ Audit trail ────────────────────────────────────────────── */
 .audit-entry {
     font-family: 'SF Mono', 'Fira Mono', 'Consolas', monospace;
     font-size: 0.82rem;
@@ -181,7 +183,7 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
     padding: 0.75rem 1rem;
 }
 
-/* ─ Results panel placeholder ───────────────────────────────── */
+/* ─ Results panel placeholder ──────────────────────────────── */
 .empty-state {
     padding: 3rem 2rem;
     text-align: center;
@@ -227,6 +229,7 @@ ACUITY_PATHWAYS = {
     "ADMINISTRATIVE": "Front Desk — non-clinical resolution"
 }
 
+# Clinical semantic colors — intentionally NOT brand colors
 ACUITY_COLORS = {
     "EMERGENT": "#b91c1c",
     "URGENT": "#c2410c",
@@ -470,7 +473,7 @@ st.divider()
 st.markdown(
     '<p style="text-align:center;color:#9c9890;font-size:0.8rem">'
     'Clinical Triage Agent · Built with LangGraph + Perplexity Sonar · '
-    '<a href="https://thefaulknergroupadvisors.com" style="color:#01696f;font-weight:600">The Faulkner Group</a>'
+    '<a href="https://thefaulknergroupadvisors.com" style="color:#6E93B0;font-weight:600">The Faulkner Group</a>'
     '</p>',
     unsafe_allow_html=True
 )
