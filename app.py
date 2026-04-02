@@ -10,51 +10,209 @@ st.set_page_config(
     layout="wide"
 )
 
-# ── STYLES ────────────────────────────────────────────
+# ── STYLES ───────────────────────────────────────────────────
 st.markdown("""
 <style>
-[data-testid="stAppViewContainer"] { background: #f7f6f2; }
-.stButton > button {
-    background: #01696f;
-    color: white;
-    border: none;
-    padding: 0.6rem 1.5rem;
-    border-radius: 6px;
-    font-weight: 600;
-    width: 100%;
+/* ─ Base & Background ─────────────────────────────────────── */
+[data-testid="stAppViewContainer"] {
+    background: #f4f3ef;
 }
-.stButton > button:hover { background: #0c4e54; }
+[data-testid="stHeader"] {
+    background: transparent;
+}
+.block-container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    max-width: 1200px;
+}
+
+/* ─ Typography ────────────────────────────────────────────── */
+h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
+    color: #1a1916 !important;
+    font-weight: 700;
+}
+.stMarkdown p, .stMarkdown li {
+    color: #2c2b28;
+}
+
+/* ─ Form container ────────────────────────────────────────── */
+[data-testid="stForm"] {
+    background: #ffffff;
+    border: 1.5px solid #c8c5be;
+    border-radius: 10px;
+    padding: 1.5rem 1.75rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+/* ─ Input labels ───────────────────────────────────────────── */
+.stTextInput label,
+.stTextArea label,
+.stCheckbox label,
+[data-baseweb="form-control-label"] {
+    color: #1a1916 !important;
+    font-weight: 600 !important;
+    font-size: 0.875rem !important;
+    letter-spacing: 0.01em;
+}
+
+/* ─ Text inputs & textareas ─────────────────────────────────── */
+.stTextInput input,
+.stTextArea textarea {
+    background: #fafaf8 !important;
+    border: 1.5px solid #b0ada6 !important;
+    border-radius: 6px !important;
+    color: #1a1916 !important;
+    font-size: 0.95rem !important;
+    padding: 0.5rem 0.75rem !important;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.stTextInput input:focus,
+.stTextArea textarea:focus {
+    border-color: #01696f !important;
+    box-shadow: 0 0 0 3px rgba(1,105,111,0.12) !important;
+    outline: none !important;
+    background: #ffffff !important;
+}
+.stTextInput input::placeholder,
+.stTextArea textarea::placeholder {
+    color: #9c9890 !important;
+}
+
+/* ─ Checkboxes ───────────────────────────────────────────────── */
+[data-baseweb="checkbox"] input + div {
+    border: 2px solid #b0ada6 !important;
+    background: #fafaf8 !important;
+}
+[data-baseweb="checkbox"] input:checked + div {
+    background: #01696f !important;
+    border-color: #01696f !important;
+}
+.stCheckbox span {
+    color: #2c2b28 !important;
+    font-size: 0.9rem !important;
+}
+
+/* ─ Primary button ───────────────────────────────────────────── */
+.stButton > button,
+[data-testid="stFormSubmitButton"] > button {
+    background: #01696f !important;
+    color: #ffffff !important;
+    border: none !important;
+    padding: 0.6rem 1.5rem !important;
+    border-radius: 6px !important;
+    font-weight: 700 !important;
+    font-size: 0.95rem !important;
+    letter-spacing: 0.02em;
+    width: 100%;
+    transition: background 0.15s ease, box-shadow 0.15s ease;
+}
+.stButton > button:hover,
+[data-testid="stFormSubmitButton"] > button:hover {
+    background: #0c4e54 !important;
+    box-shadow: 0 2px 8px rgba(1,105,111,0.25) !important;
+}
+
+/* ─ Subheaders ─────────────────────────────────────────────── */
+[data-testid="stHeadingWithActionElements"] h3 {
+    color: #1a1916 !important;
+    font-size: 1.15rem !important;
+    font-weight: 700 !important;
+    border-bottom: 2px solid #e0ddd8;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+/* ─ Info / warning / success boxes ───────────────────────────── */
+[data-testid="stInfo"] {
+    background: #edf4f5 !important;
+    border-left: 4px solid #01696f !important;
+    color: #1a1916 !important;
+    border-radius: 6px !important;
+}
+[data-testid="stWarning"] {
+    background: #fdf3e3 !important;
+    border-left: 4px solid #c87d00 !important;
+    color: #1a1916 !important;
+    border-radius: 6px !important;
+}
+[data-testid="stSuccess"] {
+    background: #edf6ed !important;
+    border-left: 4px solid #2e7d32 !important;
+    color: #1a1916 !important;
+    border-radius: 6px !important;
+}
+[data-testid="stError"] {
+    background: #fdecea !important;
+    border-left: 4px solid #c62828 !important;
+    color: #1a1916 !important;
+    border-radius: 6px !important;
+}
+
+/* ─ Divider ───────────────────────────────────────────────────── */
+[data-testid="stDivider"] hr {
+    border-color: #d4d1ca !important;
+}
+
+/* ─ Acuity badge ─────────────────────────────────────────────── */
 .acuity-badge {
     display: inline-block;
-    padding: 4px 12px;
+    padding: 5px 16px;
     border-radius: 9999px;
-    font-weight: 700;
-    font-size: 0.9rem;
-    letter-spacing: 0.05em;
+    font-weight: 800;
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 4px;
 }
+
+/* ─ Audit trail ──────────────────────────────────────────────── */
 .audit-entry {
-    font-family: monospace;
-    font-size: 0.85rem;
-    padding: 4px 0;
+    font-family: 'SF Mono', 'Fira Mono', 'Consolas', monospace;
+    font-size: 0.82rem;
+    padding: 5px 0;
     border-bottom: 1px solid #e0ddd8;
-    color: #4a4844;
+    color: #2c2b28;
+    line-height: 1.5;
+}
+.audit-block {
+    background: #ffffff;
+    border: 1.5px solid #c8c5be;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+}
+
+/* ─ Results panel placeholder ───────────────────────────────── */
+.empty-state {
+    padding: 3rem 2rem;
+    text-align: center;
+    color: #7a7974;
+    border: 1.5px dashed #c8c5be;
+    border-radius: 10px;
+    background: #ffffff;
+    font-size: 0.95rem;
+    line-height: 1.6;
 }
 </style>
 """, unsafe_allow_html=True)
 
-# ── HEADER ────────────────────────────────────────────
+# ── HEADER ───────────────────────────────────────────────────
 st.markdown("## 🏥 Clinical Triage Agent")
 st.markdown("**LangGraph-powered patient intake, acuity classification, and care pathway routing** · The Faulkner Group")
 st.divider()
 
-# ── API KEY CHECK ──────────────────────────────────────
+# ── API KEY CHECK ────────────────────────────────────────────────
 perplexity_key = os.getenv("PERPLEXITYAI_API_KEY")
+if not perplexity_key:
+    try:
+        perplexity_key = st.secrets.get("PERPLEXITYAI_API_KEY", "")
+    except Exception:
+        perplexity_key = ""
 if not perplexity_key:
     st.error("⚠️ PERPLEXITYAI_API_KEY not found. Add it to your Streamlit secrets or .env file.")
     st.code('[secrets]\nPERPLEXITYAI_API_KEY = "pplx-..."', language="toml")
     st.stop()
 
-# ── IMPORT AGENT (after key check) ────────────────────
+# ── IMPORT AGENT (after key check) ─────────────────────────────────
 from typing import TypedDict, Optional
 from langgraph.graph import StateGraph, END
 from pydantic import BaseModel
@@ -70,11 +228,11 @@ ACUITY_PATHWAYS = {
 }
 
 ACUITY_COLORS = {
-    "EMERGENT": "#c0392b",
-    "URGENT": "#e67e22",
-    "SEMI-URGENT": "#f39c12",
-    "NON-URGENT": "#27ae60",
-    "ADMINISTRATIVE": "#2980b9"
+    "EMERGENT": "#b91c1c",
+    "URGENT": "#c2410c",
+    "SEMI-URGENT": "#b45309",
+    "NON-URGENT": "#15803d",
+    "ADMINISTRATIVE": "#1d4ed8"
 }
 
 class PatientIntake(BaseModel):
@@ -101,7 +259,7 @@ def get_llm():
     return ChatPerplexity(
         model="sonar",
         temperature=0.1,
-        pplx_api_key=os.getenv("PERPLEXITYAI_API_KEY")
+        pplx_api_key=os.getenv("PERPLEXITYAI_API_KEY") or perplexity_key
     )
 
 def parse_intake(state: AgentState) -> AgentState:
@@ -109,9 +267,9 @@ def parse_intake(state: AgentState) -> AgentState:
     intake = state["intake"]
     try:
         PatientIntake(**intake)
-        log.append(f"STEP 1 ✓ Intake validated for patient {intake['patient_id']}")
+        log.append(f"STEP 1 ✓  Intake validated for patient {intake['patient_id']}")
     except Exception as e:
-        log.append(f"STEP 1 ✗ Validation error — {str(e)}")
+        log.append(f"STEP 1 ✗  Validation error — {str(e)}")
         state["requires_human_review"] = True
     state["audit_log"] = log
     return state
@@ -120,8 +278,8 @@ def classify_acuity(state: AgentState) -> AgentState:
     intake = state["intake"]
     llm = get_llm()
     prompt = ChatPromptTemplate.from_messages([
-        ("system", """You are a clinical triage specialist. Based on the patient's chief complaint 
-        and available data, classify the acuity level as exactly one of: 
+        ("system", """You are a clinical triage specialist. Based on the patient's chief complaint
+        and available data, classify the acuity level as exactly one of:
         EMERGENT, URGENT, SEMI-URGENT, NON-URGENT, ADMINISTRATIVE.
         Respond with ONLY the acuity level word, nothing else."""),
         ("human", "Chief complaint: {complaint}\nReason for visit: {reason}")
@@ -134,7 +292,7 @@ def classify_acuity(state: AgentState) -> AgentState:
     if acuity not in ACUITY_PATHWAYS:
         acuity = "NON-URGENT"
     state["acuity_level"] = acuity
-    state["audit_log"].append(f"STEP 2 ✓ Acuity classified as {acuity}")
+    state["audit_log"].append(f"STEP 2 ✓  Acuity classified as {acuity}")
     return state
 
 def route_to_pathway(state: AgentState) -> AgentState:
@@ -142,7 +300,7 @@ def route_to_pathway(state: AgentState) -> AgentState:
     pathway = ACUITY_PATHWAYS.get(acuity, ACUITY_PATHWAYS["NON-URGENT"])
     state["care_pathway"] = pathway
     state["routing_decision"] = f"Patient routed to: {pathway}"
-    state["audit_log"].append(f"STEP 3 ✓ Routed to {pathway}")
+    state["audit_log"].append(f"STEP 3 ✓  Routed to {pathway}")
     return state
 
 def detect_documentation_gaps(state: AgentState) -> AgentState:
@@ -160,16 +318,16 @@ def detect_documentation_gaps(state: AgentState) -> AgentState:
         gaps.append("Insurance verification pending")
     state["documentation_gaps"] = gaps
     state["requires_human_review"] = len(gaps) > 2
-    msg = f"STEP 4 ✓ {len(gaps)} documentation gap(s) flagged" if gaps else "STEP 4 ✓ Documentation complete — no gaps detected"
+    msg = f"STEP 4 ✓  {len(gaps)} documentation gap(s) flagged" if gaps else "STEP 4 ✓  Documentation complete — no gaps detected"
     state["audit_log"].append(msg)
     return state
 
 def finalize_audit(state: AgentState) -> AgentState:
     state["audit_log"].append(
-        f"STEP 5 ✓ Routing complete — Acuity: {state['acuity_level']} | "
+        f"STEP 5 ✓  Routing complete — Acuity: {state['acuity_level']} | "
         f"Pathway: {state['care_pathway']} | "
         f"Gaps: {len(state['documentation_gaps'])} | "
-        f"Human Review Required: {state['requires_human_review']}"
+        f"Human Review: {state['requires_human_review']}"
     )
     return state
 
@@ -189,7 +347,7 @@ def build_triage_agent():
     graph.add_edge("audit", END)
     return graph.compile()
 
-# ── INPUT FORM ────────────────────────────────────────
+# ── LAYOUT ───────────────────────────────────────────────────
 col_left, col_right = st.columns([1, 1], gap="large")
 
 with col_left:
@@ -225,7 +383,7 @@ with col_left:
 
         submitted = st.form_submit_button("▶ Run Triage Agent", type="primary")
 
-# ── RESULTS ──────────────────────────────────────────
+# ── RESULTS ───────────────────────────────────────────────────
 with col_right:
     st.subheader("Triage Decision")
 
@@ -251,19 +409,19 @@ with col_right:
                 })
 
                 acuity = result["acuity_level"]
-                color = ACUITY_COLORS.get(acuity, "#666")
+                color = ACUITY_COLORS.get(acuity, "#374151")
 
                 # Acuity badge
                 st.markdown(
-                    f'<div style="margin-bottom:1rem">'
-                    f'<span style="font-size:0.75rem;color:#7a7974;text-transform:uppercase;letter-spacing:0.1em">Acuity Level</span><br>'
-                    f'<span class="acuity-badge" style="background:{color};color:white;font-size:1.1rem;padding:6px 18px;margin-top:4px">{acuity}</span>'
+                    f'<div style="margin-bottom:1.25rem">'
+                    f'<span style="font-size:0.72rem;color:#7a7974;text-transform:uppercase;letter-spacing:0.12em;font-weight:600">Acuity Level</span><br>'
+                    f'<span class="acuity-badge" style="background:{color};color:#ffffff">{acuity}</span>'
                     f'</div>',
                     unsafe_allow_html=True
                 )
 
                 # Pathway
-                st.markdown(f"**Care Pathway**")
+                st.markdown("**Care Pathway**")
                 st.info(result["care_pathway"])
 
                 # Human review flag
@@ -274,36 +432,45 @@ with col_right:
 
                 # Documentation gaps
                 gaps = result["documentation_gaps"]
+                st.markdown(f"**Documentation Gaps ({len(gaps)})**")
                 if gaps:
-                    st.markdown(f"**Documentation Gaps ({len(gaps)})**")
                     for g in gaps:
-                        st.markdown(f"- 🔴 {g}")
+                        st.markdown(
+                            f'<div style="display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid #e0ddd8">'
+                            f'<span style="color:#b91c1c;font-weight:700">●</span>'
+                            f'<span style="color:#2c2b28;font-size:0.9rem">{g}</span>'
+                            f'</div>',
+                            unsafe_allow_html=True
+                        )
                 else:
-                    st.markdown("**Documentation Gaps**")
-                    st.markdown("✅ None — all fields complete")
+                    st.success("✓ None — all fields complete")
 
                 # Audit trail
                 st.markdown("**Audit Trail**")
-                for entry in result["audit_log"]:
-                    st.markdown(f'<div class="audit-entry">{entry}</div>', unsafe_allow_html=True)
+                audit_html = "".join(
+                    f'<div class="audit-entry">{entry}</div>'
+                    for entry in result["audit_log"]
+                )
+                st.markdown(f'<div class="audit-block">{audit_html}</div>', unsafe_allow_html=True)
 
             except Exception as e:
                 st.error(f"Agent error: {str(e)}")
                 st.exception(e)
     else:
         st.markdown(
-            '<div style="padding:3rem 2rem;text-align:center;color:#7a7974;border:1px dashed #dcd9d5;border-radius:8px">'
-            'Fill in patient intake data and click <strong>Run Triage Agent</strong> to see the triage decision, care pathway, documentation gaps, and audit trail.'
+            '<div class="empty-state">'
+            'Fill in patient intake data and click <strong>Run Triage Agent</strong><br>'
+            'to see the triage decision, care pathway, documentation gaps, and audit trail.'
             '</div>',
             unsafe_allow_html=True
         )
 
-# ── FOOTER ───────────────────────────────────────────
+# ── FOOTER ───────────────────────────────────────────────────
 st.divider()
 st.markdown(
-    '<p style="text-align:center;color:#bab9b4;font-size:0.8rem">'
+    '<p style="text-align:center;color:#9c9890;font-size:0.8rem">'
     'Clinical Triage Agent · Built with LangGraph + Perplexity Sonar · '
-    '<a href="https://thefaulknergroupadvisors.com" style="color:#01696f">The Faulkner Group</a>'
+    '<a href="https://thefaulknergroupadvisors.com" style="color:#01696f;font-weight:600">The Faulkner Group</a>'
     '</p>',
     unsafe_allow_html=True
 )
