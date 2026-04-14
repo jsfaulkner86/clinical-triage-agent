@@ -1,14 +1,19 @@
 # Agent Orchestration
-langgraph>=0.2.0,<0.4.0
-langchain>=0.3.0,<0.4.0
+langgraph==0.3.18
+langchain==0.3.23
+langchain-core==0.3.51
+langchain-openai==0.2.14
 langchain-perplexity>=0.1.0
 
 # Data Validation
-pydantic>=2.10.0,<3.0.0
-pydantic-ai>=0.0.46,<1.0.0
+pydantic==2.10.6
+pydantic-ai==0.0.46
+
+# Observability
+langsmith==0.3.18
 
 # Utilities
-python-dotenv>=1.0.1,<2.0.0
+python-dotenv==1.0.1
 
 # Demo UI
-streamlit>=1.32.0,<2.0.0
+streamlit==1.32.2
