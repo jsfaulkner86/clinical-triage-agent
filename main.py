@@ -18,6 +18,11 @@ class PatientIntake(BaseModel):
     referring_provider: Optional[str] = None
     reason_for_visit: Optional[str] = None
 
+class AcuityAssessment(BaseModel):
+    """Structured assessment to prevent context hallucinations."""
+    acuity: Literal["EMERGENT", "URGENT", "SEMI-URGENT", "NON-URGENT", "ADMINISTRATIVE"]
+    rationale: str = Field(description="Clinical reasoning for the assigned level.")
+
 class AgentState(TypedDict):
     intake: dict
     acuity_level: str
@@ -65,26 +70,24 @@ def parse_intake(state: AgentState) -> AgentState:
 
 def classify_acuity(state: AgentState) -> AgentState:
     intake = state["intake"]
+    
+    # Fix: Use structured output to ensure valid categories
+    structured_llm = llm.with_structured_output(AcuityAssessment)
 
     prompt = ChatPromptTemplate.from_messages([
-        ("system", """You are a clinical triage specialist. Based on the 
-        patient's chief complaint and available data, classify the acuity 
-        level as one of: EMERGENT, URGENT, SEMI-URGENT, NON-URGENT, ADMINISTRATIVE.
-        Respond with only the acuity level word."""),
+        ("system", "You are a senior clinical triage specialist. Analyze the complaint carefully."),
         ("human", "Chief complaint: {complaint}\nReason for visit: {reason}")
     ])
 
-    response = llm.invoke(prompt.format_messages(
+    # Fix: Context Optimization - we pass ONLY complaint and reason, 
+    # leaving out administrative data like patient_id or insurance.
+    assessment = structured_llm.invoke(prompt.format_messages(
         complaint=intake.get("chief_complaint", "Not provided"),
         reason=intake.get("reason_for_visit", "Not provided")
     ))
 
-    acuity = response.content.strip().upper()
-    if acuity not in ACUITY_PATHWAYS:
-        acuity = "NON-URGENT"
-
-    state["acuity_level"] = acuity
-    state["audit_log"].append(f"STEP 2: Acuity classified as {acuity}")
+    state["acuity_level"] = assessment.acuity
+    state["audit_log"].append(f"STEP 2: Acuity assigned: {assessment.acuity}. Rationale: {assessment.rationale}")
     return state
 
 # ── NODE 3: ROUTE TO CARE PATHWAY ─────────────────────
@@ -149,7 +152,14 @@ def build_triage_agent():
 
     graph.set_entry_point("parse")
     graph.add_edge("parse", "classify")
-    graph.add_edge("classify", "route")
+    graph.add_conditional_edges(
+        "classify",
+        lambda x: "emergency" if x["acuity_level"] == "EMERGENT" else "standard",
+        {
+            "emergency": "route", 
+            "standard": "route"
+        }
+    )
     graph.add_edge("route", "gaps")
     graph.add_edge("gaps", "audit")
     graph.add_edge("audit", END)
